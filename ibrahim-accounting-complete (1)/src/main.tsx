@@ -43,9 +43,19 @@ const trpcClient = trpc.createClient({
       transformer: superjson,
       fetch(input, init) {
         // Return mock data instead of making real API calls
-        return Promise.resolve(new Response(JSON.stringify({ result: { data: null } }), {
+        // Use status 200 which allows body content
+        return Promise.resolve(new Response(JSON.stringify({ 
+          result: { 
+            data: [],
+            success: true 
+          } 
+        }), {
           status: 200,
-          headers: { 'Content-Type': 'application/json' }
+          statusText: 'OK',
+          headers: { 
+            'Content-Type': 'application/json',
+            'Cache-Control': 'no-cache'
+          }
         }));
       },
     }),
