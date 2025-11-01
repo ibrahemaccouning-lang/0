@@ -2,41 +2,69 @@ import { supabase } from '../lib/supabase';
 
 export const adminService = {
   // User Management
-  async getUsers(filters = {}) {
-    let query = supabase?.from('user_profiles')?.select('*')?.order('created_at', { ascending: false });
+  // Improved getUsers with optional pagination and server-side filtering.
+  // Accepts an options object: { page, perPage, filters }
+  // Returns an object: { users: [...], total: <number> }
+  async getUsers(options = {}) {
+    const { page = 1, perPage = 50, filters = {} } = options || {};
 
-    if (filters?.role) {
-      query = query?.eq('role', filters?.role);
-    }
-    
-    // Handle status filtering more comprehensively
+    // Build base query with filters applied.
+    let base = supabase?.from('user_profiles')?.select('*');
+
+    if (filters?.role) base = base?.eq('role', filters?.role);
+
     if (filters?.status && filters?.status !== 'all') {
       if (filters?.status === 'pending') {
-        // Show both new registrations and those explicitly marked as pending
-        query = query?.or('approval_status.eq.pending,approval_status.is.null');
+        base = base?.or('approval_status.eq.pending,approval_status.is.null');
       } else if (filters?.status === 'approved') {
-        query = query?.eq('approval_status', 'approved')?.eq('status', 'active');
+        base = base?.eq('approval_status', 'approved')?.eq('status', 'active');
       } else {
-        query = query?.eq('status', filters?.status);
+        base = base?.eq('status', filters?.status);
       }
     }
-    // When no status filter is applied, return all users (removed the problematic or() clause)
-    
-    if (filters?.level !== undefined) {
-      query = query?.eq('level', filters?.level);
-    }
 
-    const { data, error } = await query;
-    if (error) throw error;
+    if (filters?.level !== undefined) base = base?.eq('level', filters?.level);
 
-    // Merge wallets info so dashboard shows real balances
+    // Apply ordering
+    base = base?.order('created_at', { ascending: false });
+
     try {
-      const userIds = (data || [])?.map(u => u?.id)?.filter(Boolean);
-      if (userIds?.length > 0) {
+      // Get total count using a lightweight head query with same filters
+      let countQuery = supabase?.from('user_profiles')?.select('id', { count: 'exact', head: true });
+      if (filters?.role) countQuery = countQuery?.eq('role', filters?.role);
+      if (filters?.status && filters?.status !== 'all') {
+        if (filters?.status === 'pending') {
+          countQuery = countQuery?.or('approval_status.eq.pending,approval_status.is.null');
+        } else if (filters?.status === 'approved') {
+          countQuery = countQuery?.eq('approval_status', 'approved')?.eq('status', 'active');
+        } else {
+          countQuery = countQuery?.eq('status', filters?.status);
+        }
+      }
+      if (filters?.level !== undefined) countQuery = countQuery?.eq('level', filters?.level);
+
+      const { count, error: countErr } = (await countQuery) || {};
+      if (countErr) {
+        console.warn('Failed to get users total count:', countErr);
+      }
+
+      const start = (Math.max(1, page) - 1) * perPage;
+      const end = start + perPage - 1;
+
+      // Perform paged query
+      const { data, error } = await base?.range(start, end);
+      if (error) throw error;
+
+      // Merge wallets info only for returned users (prevents fetching all wallets)
+      const userIds = (data || []).map(u => u?.id).filter(Boolean);
+      if (userIds.length > 0) {
         const { data: wallets, error: wErr } = await supabase
           ?.from('wallets')
-          ?.select('user_id, available_balance, total_earned, earnings_from_referrals');
+          ?.select('user_id, available_balance, total_earned, earnings_from_referrals')
+          ?.in('user_id', userIds);
+
         if (wErr) throw wErr;
+
         const userIdToWallet = Object.fromEntries((wallets || []).map(w => [w.user_id, w]));
         const merged = (data || []).map(u => {
           const w = userIdToWallet[u.id] || {};
@@ -47,14 +75,14 @@ export const adminService = {
             referral_earnings: parseFloat(w?.earnings_from_referrals) || 0
           };
         });
-        return merged;
-      }
-    } catch (mergeErr) {
-      // If wallets fetch fails, fall back to original data
-      console.warn('Failed to merge wallets into users:', mergeErr);
-    }
 
-    return data;
+        return { users: merged, total: typeof count === 'number' ? count : null };
+      }
+
+      return { users: data || [], total: typeof count === 'number' ? count : null };
+    } catch (err) {
+      throw err;
+    }
   },
 
   // Per-user withdrawal override (admin only)

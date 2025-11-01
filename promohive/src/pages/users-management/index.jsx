@@ -26,6 +26,9 @@ const UsersManagement = () => {
   const [sortBy, setSortBy] = useState('created_at');
   const [sortOrder, setSortOrder] = useState('desc');
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(50);
+  const [totalUsersCount, setTotalUsersCount] = useState(null);
   const [actionLoading, setActionLoading] = useState(false);
   const [filters, setFilters] = useState({
     search: '',
@@ -63,12 +66,24 @@ const UsersManagement = () => {
     }
     
     fetchUsers();
-  }, []);
+    // re-run when page, perPage or filters change
+  }, [page, perPage]);
+
+  useEffect(() => {
+    // when filters change, reset to first page
+    setPage(1);
+    fetchUsers();
+  }, [filters]);
+  
+  const totalPages = totalUsersCount ? Math.ceil(totalUsersCount / perPage) : null;
 
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const usersData = await adminService.getUsers();
+  const res = await adminService.getUsers({ page, perPage, filters });
+  const usersData = res?.users || [];
+  const total = typeof res?.total === 'number' ? res.total : null;
+  setTotalUsersCount(total);
       
       // Transform data to match component structure
       const transformedUsers = usersData.map(u => {
@@ -109,7 +124,7 @@ const UsersManagement = () => {
       setUsers(transformedUsers);
 
       // Calculate stats
-      const totalUsers = transformedUsers.length;
+  const totalUsers = totalUsersCount || transformedUsers.length;
       const pendingUsers = transformedUsers.filter(u => u.status === 'pending').length;
       const activeUsers = transformedUsers.filter(u => u.status === 'approved').length;
       const suspendedUsers = transformedUsers.filter(u => u.status === 'suspended').length;
@@ -415,6 +430,36 @@ const UsersManagement = () => {
               onExport={handleExport}
               onBulkAction={handleBulkAction}
               selectedUsers={selectedUsers} />
+
+            {/* Pagination controls */}
+            <div className="flex items-center justify-between mb-4">
+              <div className="text-sm text-text-secondary">
+                {totalUsersCount ? `Showing ${Math.min((page - 1) * perPage + 1, totalUsersCount)} - ${Math.min(page * perPage, totalUsersCount)} of ${totalUsersCount}` : `Page ${page}`}
+              </div>
+              <div className="flex items-center space-x-2">
+                <select
+                  value={perPage}
+                  onChange={(e) => { setPerPage(parseInt(e.target.value, 10)); setPage(1); }}
+                  className="form-select bg-transparent border border-border text-text-secondary rounded px-2 py-1">
+                  <option value={10}>10 / page</option>
+                  <option value={25}>25 / page</option>
+                  <option value={50}>50 / page</option>
+                  <option value={100}>100 / page</option>
+                </select>
+                <button
+                  disabled={page <= 1}
+                  onClick={() => setPage(Math.max(1, page - 1))}
+                  className={`px-3 py-1 rounded ${page <= 1 ? 'opacity-50 cursor-not-allowed' : 'bg-primary text-white'}`}>
+                  Prev
+                </button>
+                <button
+                  disabled={totalPages && page >= totalPages}
+                  onClick={() => setPage(page + 1)}
+                  className={`px-3 py-1 rounded ${totalPages && page >= totalPages ? 'opacity-50 cursor-not-allowed' : 'bg-primary text-white'}`}>
+                  Next
+                </button>
+              </div>
+            </div>
 
             {loading ? (
               <div className="glass rounded-lg border border-border p-12">
