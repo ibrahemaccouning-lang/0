@@ -28,9 +28,9 @@ const GoogleSignInButton = ({ isLoading, setIsLoading }) => {
       disabled={isLoading}
       className={`
         w-full flex justify-center items-center gap-3 py-3 px-4
-        bg-white border border-gray-200 hover:bg-gray-50
+        bg-white/10 border border-white/20 hover:bg-white/20
         rounded-xl shadow-sm
-        text-gray-700 font-medium
+        text-white font-medium
         hover:shadow-md hover:scale-[1.02]
         focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:ring-offset-2
         transition-all duration-200 ease-out

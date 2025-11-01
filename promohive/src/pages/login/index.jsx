@@ -23,12 +23,12 @@ const LoginPage = () => {
   }, [navigate]);
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-b from-[#0f2027] via-[#203a43] to-[#2c5364] flex items-center justify-center p-4 relative overflow-hidden">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-[#00B2FF]/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#FF00FF]/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-[#0066FF]/10 rounded-full blur-3xl animate-pulse delay-500"></div>
+        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-white/5 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-white/5 rounded-full blur-3xl animate-pulse delay-500"></div>
         
         {/* Brand Pattern */}
         <div className="absolute inset-0 opacity-[0.02] bg-[url('/pattern.png')] bg-repeat"></div>
@@ -36,7 +36,7 @@ const LoginPage = () => {
       {/* Login Container */}
       <div className="relative w-full max-w-md">
         {/* Main Login Card */}
-        <div className="glass rounded-2xl shadow-2xl border border-border/50 p-8 backdrop-blur-xl">
+        <div className="glass rounded-2xl shadow-2xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl">
           {/* Header */}
           <LoginHeader />
 

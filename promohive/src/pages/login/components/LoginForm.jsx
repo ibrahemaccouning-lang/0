@@ -96,21 +96,21 @@ const LoginForm = () => {
       {/* Divider */}
       <div className="relative mb-6">
         <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-border"></div>
+          <div className="w-full border-t border-white/20"></div>
         </div>
         <div className="relative flex justify-center text-sm">
-          <span className="px-4 bg-white text-gray-500">or continue with</span>
+          <span className="px-4 bg-transparent text-white/60">or continue with</span>
         </div>
       </div>
 
       {/* Email Field */}
       <div className="space-y-2">
-        <label htmlFor="email" className="block text-sm font-medium text-gray-900">
+          <label htmlFor="email" className="block text-sm font-medium text-white">
           Email Address
         </label>
         <div className="relative">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Mail className="h-5 w-5 text-text-secondary" />
+            <Mail className="h-5 w-5 text-white/40" />
           </div>
           <input
             id="email"
@@ -121,11 +121,11 @@ const LoginForm = () => {
             onChange={handleChange}
             className={`
               block w-full pl-10 pr-3 py-3 border rounded-xl shadow-sm
-              bg-white text-gray-900 placeholder-gray-400
-              focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500
+              bg-white/5 text-white placeholder-white/50
+              focus:outline-none focus:ring-2 focus:ring-white/25 focus:border-white/25
               transition-all duration-200
-              hover:bg-gray-50
-              ${errors?.email ? 'border-red-500 ring-red-200' : 'border-gray-200 hover:border-gray-300'}
+              hover:bg-white/10
+              ${errors?.email ? 'border-red-500/50 ring-red-500/20' : 'border-white/20 hover:border-white/30'}
             `}
             placeholder="Enter your email"
             disabled={isLoading}
@@ -140,12 +140,12 @@ const LoginForm = () => {
       </div>
       {/* Password Field */}
       <div className="space-y-2">
-        <label htmlFor="password" className="block text-sm font-medium text-gray-900">
+        <label htmlFor="password" className="block text-sm font-medium text-white">
           Password
         </label>
         <div className="relative">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Lock className="h-5 w-5 text-text-secondary" />
+            <Lock className="h-5 w-5 text-white/40" />
           </div>
           <input
             id="password"
@@ -156,10 +156,10 @@ const LoginForm = () => {
             onChange={handleChange}
             className={`
               block w-full pl-10 pr-12 py-3 border rounded-xl shadow-sm
-              bg-white text-gray-900 placeholder-gray-400
-              focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500
+              bg-white/5 text-white placeholder-white/50
+              focus:outline-none focus:ring-2 focus:ring-white/25 focus:border-white/25
               transition-all duration-200
-              ${errors?.password ? 'border-red-500 ring-red-200' : 'border-gray-200 hover:border-gray-300'}
+              ${errors?.password ? 'border-red-500/50 ring-red-500/20' : 'border-white/20 hover:border-white/30'}
             `}
             placeholder="Enter your password"
             disabled={isLoading}

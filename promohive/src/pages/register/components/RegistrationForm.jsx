@@ -205,7 +205,7 @@ const RegistrationForm = () => {
         </label>
         <div className="relative">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <User className="h-5 w-5 text-text-secondary" />
+            <User className="h-5 w-5 text-white/40" />
           </div>
           <input
             id="fullName"
@@ -216,10 +216,11 @@ const RegistrationForm = () => {
             onChange={handleChange}
             className={`
               block w-full pl-10 pr-3 py-3 border rounded-xl shadow-sm
-              bg-surface/50 backdrop-blur-sm text-text-primary placeholder-text-secondary
-              focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary
+              bg-white/5 text-white placeholder-white/50
+              focus:outline-none focus:ring-2 focus:ring-white/25 focus:border-white/25
               transition-all duration-200
-              ${errors?.fullName ? 'border-destructive ring-destructive/20' : 'border-border hover:border-border-hover'}
+              hover:bg-white/10
+              ${errors?.fullName ? 'border-red-500/50 ring-red-500/20' : 'border-white/20 hover:border-white/30'}
             `}
             placeholder="Enter your full name"
             disabled={isLoading}
@@ -235,12 +236,12 @@ const RegistrationForm = () => {
 
       {/* Email Field */}
       <div className="space-y-2">
-        <label htmlFor="email" className="block text-sm font-medium text-text-primary">
+        <label htmlFor="email" className="block text-sm font-medium text-white">
           Email Address
         </label>
         <div className="relative">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Mail className="h-5 w-5 text-text-secondary" />
+            <Mail className="h-5 w-5 text-white/40" />
           </div>
           <input
             id="email"
@@ -251,10 +252,11 @@ const RegistrationForm = () => {
             onChange={handleChange}
             className={`
               block w-full pl-10 pr-3 py-3 border rounded-xl shadow-sm
-              bg-surface/50 backdrop-blur-sm text-text-primary placeholder-text-secondary
-              focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary
+              bg-white/5 text-white placeholder-white/50
+              focus:outline-none focus:ring-2 focus:ring-white/25 focus:border-white/25
               transition-all duration-200
-              ${errors?.email ? 'border-destructive ring-destructive/20' : 'border-border hover:border-border-hover'}
+              hover:bg-white/10
+              ${errors?.email ? 'border-red-500/50 ring-red-500/20' : 'border-white/20 hover:border-white/30'}
             `}
             placeholder="Enter your email"
             disabled={isLoading}
@@ -286,10 +288,11 @@ const RegistrationForm = () => {
             onChange={handleChange}
             className={`
               block w-full pl-10 pr-12 py-3 border rounded-xl shadow-sm
-              bg-surface/50 backdrop-blur-sm text-text-primary placeholder-text-secondary
-              focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary
+              bg-white/5 text-white placeholder-white/50
+              focus:outline-none focus:ring-2 focus:ring-white/25 focus:border-white/25
               transition-all duration-200
-              ${errors?.password ? 'border-destructive ring-destructive/20' : 'border-border hover:border-border-hover'}
+              hover:bg-white/10
+              ${errors?.password ? 'border-red-500/50 ring-red-500/20' : 'border-white/20 hover:border-white/30'}
             `}
             placeholder="Choose a strong password"
             disabled={isLoading}
@@ -333,10 +336,11 @@ const RegistrationForm = () => {
             onChange={handleChange}
             className={`
               block w-full pl-10 pr-12 py-3 border rounded-xl shadow-sm
-              bg-surface/50 backdrop-blur-sm text-text-primary placeholder-text-secondary
-              focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary
+              bg-white/5 text-white placeholder-white/50
+              focus:outline-none focus:ring-2 focus:ring-white/25 focus:border-white/25
               transition-all duration-200
-              ${errors?.confirmPassword ? 'border-destructive ring-destructive/20' : 'border-border hover:border-border-hover'}
+              hover:bg-white/10
+              ${errors?.confirmPassword ? 'border-red-500/50 ring-red-500/20' : 'border-white/20 hover:border-white/30'}
             `}
             placeholder="Re-enter your password"
             disabled={isLoading}
@@ -395,12 +399,12 @@ const RegistrationForm = () => {
 
       {/* Referral Code (optional) */}
       <div className="space-y-2">
-        <label htmlFor="referralCode" className="block text-sm font-medium text-text-primary">
+        <label htmlFor="referralCode" className="block text-sm font-medium text-white">
           Referral Code (optional)
         </label>
         <div className="relative">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Key className="h-5 w-5 text-text-secondary" />
+            <Key className="h-5 w-5 text-white/40" />
           </div>
           <input
             id="referralCode"
@@ -410,10 +414,11 @@ const RegistrationForm = () => {
             onChange={handleChange}
             className={`
               block w-full pl-10 pr-3 py-3 border rounded-xl shadow-sm
-              bg-surface/50 backdrop-blur-sm text-text-primary placeholder-text-secondary
-              focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary
+              bg-white/5 text-white placeholder-white/50
+              focus:outline-none focus:ring-2 focus:ring-white/25 focus:border-white/25
               transition-all duration-200
-              border-border hover:border-border-hover
+              hover:bg-white/10
+              border-white/20 hover:border-white/30
             `}
             placeholder="Enter a code if you have one"
             disabled={isLoading}
