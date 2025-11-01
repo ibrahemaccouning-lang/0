@@ -84,6 +84,40 @@
     min-height: 100vh;
   }
 
+  /* Global input styles to enforce dark glass look across the site */
+  input,
+  textarea,
+  select,
+  .input {
+    background-color: rgba(255, 255, 255, 0.05); /* semi-transparent */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 0.75rem; /* 12px */
+    border-radius: 0.5rem; /* 8px */
+    outline: none;
+    transition: background-color var(--duration-fast) ease, border-color var(--duration-fast) ease, box-shadow var(--duration-fast) ease;
+  }
+
+  input:focus,
+  textarea:focus,
+  select:focus,
+  .input:focus {
+    border-color: rgba(255, 255, 255, 0.35);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+    background-color: rgba(255,255,255,0.06);
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  /* Ensure buttons and selects use readable white text by default */
+  button,
+  select {
+    color: white;
+  }
+
   /* Glass Morphism Utility Classes */
   .glass {
     background: rgba(17, 25, 40, 0.75);
